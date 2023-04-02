@@ -1,22 +1,27 @@
 package br.com.dio.desafio.dominio;
 
 //modelar a Classe
-public class Curso {
+public class Curso extends Conteudo {
 
     //1º) atributos da classe Curso
     //modificadores de acesso: private (só a classe tem acesso), protect (só a classe e as classe filhas),
     //public (qualquer classe pode ter acesso, por padrao é puplic quando não coloca-se nada)
     //por boa prática usa-se "private"
-    private String titulo;
+    /**private String titulo;
     private String descricao;
+     */
     private int cargaHoraria;
 
+    @Override
+    public double calcularXP() {
+        return XP_PADRAO * cargaHoraria;
+    }
+
     //4º) criar o construtor vazio
-
-
     public Curso() {
     }
 
+    /**
     //2º)criar os métodos getter e setter dos atributos
     public String getTitulo() {
         return titulo;
@@ -33,7 +38,7 @@ public class Curso {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
+    */
     public int getCargaHoraria() {
         return cargaHoraria;
     }
@@ -47,9 +52,11 @@ public class Curso {
     @Override
     public String toString() {
         return "Curso{" +
-                "titulo='" + titulo + '\'' +
-                ", descricao='" + descricao + '\'' +
+                "titulo='" + getTitulo() + '\'' +
+                ", descricao='" + getDescricao() + '\'' +
                 ", cargaHoraria=" + cargaHoraria +
                 '}';
     }
+
+
 }
