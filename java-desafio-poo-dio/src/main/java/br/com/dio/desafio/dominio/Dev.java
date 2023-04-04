@@ -2,6 +2,7 @@ package br.com.dio.desafio.dominio;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 public class Dev {
@@ -13,15 +14,36 @@ public class Dev {
     private Set<Conteudo> conteudosConcluidos = new LinkedHashSet<>();
 
     //2º) criar os métodos
-    public void inscreverBootcamp(Bootcamp bootcamp){}
+    public void inscreverBootcamp(Bootcamp bootcamp){
+        //inserindo tudo que está no bootcamp no conteudoInscritos
+        this.conteudoInscritos.addAll(bootcamp.getConteudos());
+        //adicionar o dev no bootcamp
+        bootcamp.getDevsInscritos().add(this);
+    }
 
-    public void progredir(){}
+    public void progredir(){
+        //pegar os conteudosInscritos e colocar dentro de conteudosConcluidos
+        Optional<Conteudo> conteudo = this.conteudoInscritos.stream().findFirst();
 
-    public void calcularTotalXp(){}
+        //para tirar o conteudo de conteudoInscritos e colocar em conteudoConcluidos
+        //isPresente() verifica se o primeiro conteúdo é existente
+        if(conteudo.isPresent()){
+            this.conteudosConcluidos.add(conteudo.get());
+            this.conteudoInscritos.remove(conteudo.get());
+        }else {
+            System.err.println("Você não está matriculado em nenhum conteúdo!");
+        }
+    }
+
+    public double calcularTotalXp(){
+        return this.conteudosConcluidos
+                .stream()
+                .mapToDouble(conteudo -> conteudo.calcularXP())
+                .sum();
+
+    }
 
     //3º) criar os getter e setter
-
-
     public String getNome() {
         return nome;
     }
@@ -47,8 +69,6 @@ public class Dev {
     }
 
     //4º) quando se trabalha com HashSet deve-se implementar equals e hashCode
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
